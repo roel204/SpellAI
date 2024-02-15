@@ -1,0 +1,16 @@
+{
+  "name": "server",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "SpellAI Server",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node --env-file=.env --watch server.js"
+  },
+  "author": "Roel Hoogendoorn",
+  "license": "ISC",
+  "dependencies": {
+    "@langchain/openai": "^0.0.14",
+    "langchain": "^0.1.18"
+  }
+}
