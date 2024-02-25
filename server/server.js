@@ -1,15 +1,19 @@
-// Express
+import express from 'express';
+import jokeRouter from './joke.js'
+import chatRouter from './chat.js'
 
-// Communicatie met ChatGPT via Azure API
+const app = express();
 
-import { ChatOpenAI } from "@langchain/openai"
+app.use(express.json());
+app.use("/joke", jokeRouter);
+app.use("/chat", chatRouter);
 
-const model = new ChatOpenAI({
-    azureOpenAIApiKey: process.env.AZURE_OPENAI_API_KEY,
-    azureOpenAIApiVersion: process.env.OPENAI_API_VERSION,
-    azureOpenAIApiInstanceName: process.env.INSTANCE_NAME,
-    azureOpenAIApiDeploymentName: process.env.ENGINE_NAME,
-})
+// Catch-all route for undefined routes
+app.use((req, res) => {
+    console.log("Fallback activated")
+    res.status(404).json({ error: "Not Found" });
+});
 
-const joke = await model.invoke("Tell me a Javascript joke!")
-console.log(joke.content)
+app.listen(8000, () => {
+    console.log('Server is running on port 8000');
+});
