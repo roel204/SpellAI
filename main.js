@@ -1,6 +1,12 @@
 document.getElementById("questionForm").addEventListener("submit", async function(event) {
     event.preventDefault();
 
+    const form = document.getElementById("questionForm");
+    const submitButton = document.getElementById("submitButton");
+
+    form.disabled = true;
+    submitButton.disabled = true;
+    
     const formData = new FormData(this);
     const question = formData.get("question");
 
@@ -19,7 +25,16 @@ document.getElementById("questionForm").addEventListener("submit", async functio
 
         const responseData = await response.json();
         console.log("Response:", responseData);
-    } catch (error) {
+        document.getElementById("response").textContent = responseData;
+        
+    } 
+    
+    catch (error) {
         console.error("Error:", error);
+    } 
+    
+    finally {
+        form.disabled = false;
+        submitButton.disabled = false;
     }
 });
