@@ -4,6 +4,14 @@ import {ChatOpenAI} from "@langchain/openai";
 const router = express.Router();
 router.use(express.urlencoded({extended: true}));
 
+// Middleware to enable CORS
+router.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    res.header("Access-Control-Allow-Methods", "POST, OPTIONS");
+    next();
+});
+
 // Middleware to check the Content-Type header for all POST requests
 const checkContentTypeHeader = (req, res, next) => {
     if (req.method === 'POST' && (!req.headers['content-type'] ||
@@ -31,10 +39,6 @@ router.post("/", async (req, res) => {
     try {
         const chat = await model.invoke(query);
 
-        res.header("Access-Control-Allow-Origin", "*");
-        res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-        res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-
         res.json(chat.content);
     } catch (error) {
         res.status(400).json({error: error.message});
@@ -44,9 +48,6 @@ router.post("/", async (req, res) => {
 router.options("/", (req, res) => {
     console.log("Start /Options")
     res.header("Allow", "POST, OPTIONS");
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    res.header("Access-Control-Allow-Methods", "POST, OPTIONS");
     res.status(200).send();
 });
 
