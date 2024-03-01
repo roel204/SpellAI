@@ -4,18 +4,32 @@
     <meta charset="UTF-8">
     <title>Spell AI</title>
     <script defer src="main.js" type="module"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<form id="TextForm">
-    <label for="input">Type your question here:</label>
-    <input id="input" name="input" type="text" autocomplete="off">
+<h1>Spell AI</h1>
+
+<form id="TextForm" class="vf">
+    <div class="hf">
+
+        <div class="vf">
+            <label for="input">Text Input</label>
+            <textarea id="input" name="input" autocomplete="off" required></textarea>
+        </div>
+
+        <div class="vf">
+            <label for="response">AI Response</label>
+            <textarea id="response" name="response" autocomplete="off" readonly></textarea>
+        </div>
+
+    </div>
+
     <label for="instruction">Extra instructions:</label>
-    <input id="instruction" name="instruction" type="text" autocomplete="off">
+    <input id="instruction" name="instruction" type="text" autocomplete="off" placeholder="Extra Instructions...">
+
     <button id="submitButton" type="submit">Submit</button>
 </form>
-
-<div id="response"></div>
 
 </body>
 </html>
