@@ -44,7 +44,6 @@ router.post("/", async (req, res) => {
 
 // Options Route
 router.options("/", (req, res) => {
-    console.log("Start /Options")
     res.header("Allow", "POST, OPTIONS");
     res.status(200).send();
 });
