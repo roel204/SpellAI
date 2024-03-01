@@ -14,6 +14,7 @@ form {
 }
 
 #input, #response {
+    font-family: monospace;
     width: 30vw;
     height: 40vh;
     padding: 10px;
@@ -36,6 +37,10 @@ form {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.changes {
+    color: red;
 }
 
 #loader {
@@ -67,4 +72,8 @@ form {
 
 .dn {
     display: none;
+}
+
+p {
+    margin: 0;
 }
