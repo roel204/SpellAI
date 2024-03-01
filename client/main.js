@@ -1,21 +1,26 @@
 const form = document.getElementById("TextForm");
 const submitButton = document.getElementById("submitButton");
+const loader = document.getElementById("loader")
+loader.classList.add("dn")
 
-document.getElementById("TextForm").addEventListener("submit", async function (event) {
+form.addEventListener("submit", async function (event) {
     event.preventDefault();
 
     // Disable the form when text has been submitted
     form.disabled = true;
     submitButton.disabled = true;
-
+    loader.classList.remove("dn")
+    
     // Get text from the form
     const formData = new FormData(this);
     const inputText = formData.get("input");
     const instruction = formData.get("instruction");
-    const engineeredPrompt = `You are a language critic and make sure every text is written correctly. Someone has written this text: "${inputText}" ${ 
-        instruction !== '' ? `and they have given an extra instruction you need to keep in mind: "${instruction}"` : ''} You need to make sure everything about the spelling and sentence structure is correct. Reply with only the improved text and nothing else.`;
-
-
+    const engineeredPrompt = `
+You are a language critic. Someone has written the following text:
+${inputText}
+${instruction ? `They have also provided the following instructions: ${instruction}` : ''}
+Please make sure it is grammatically correct. Respond with only the improved text.`;
+    
     try {
         // Send POST request to the server with the input
         const response = await fetch("http://localhost:8000/chat", {
@@ -40,5 +45,6 @@ document.getElementById("TextForm").addEventListener("submit", async function (e
     finally {
         form.disabled = false;
         submitButton.disabled = false;
+        loader.classList.add("dn")
     }
 });
