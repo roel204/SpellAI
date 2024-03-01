@@ -1,31 +1,32 @@
-document.getElementById("questionForm").addEventListener("submit", async function(event) {
+document.getElementById("TextForm").addEventListener("submit", async function(event) {
     event.preventDefault();
 
-    const form = document.getElementById("questionForm");
+    // Disable the form when text has been submitted
+    const form = document.getElementById("TextForm");
     const submitButton = document.getElementById("submitButton");
-
     form.disabled = true;
     submitButton.disabled = true;
     
+    // Get text from the form
     const formData = new FormData(this);
-    const question = formData.get("question");
+    const input = formData.get("input");
 
     try {
+        // Send POST request to the server with the input
         const response = await fetch("http://localhost:8000/chat", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ query: question })
+            body: JSON.stringify({ query: input })
         });
 
         if (!response.ok) {
             new Error("Failed to submit question");
         }
 
-        const responseData = await response.json();
-        console.log("Response:", responseData);
-        document.getElementById("response").textContent = responseData;
+        // Wait for response and show
+        document.getElementById("response").textContent = await response.json();
         
     } 
     
@@ -33,6 +34,7 @@ document.getElementById("questionForm").addEventListener("submit", async functio
         console.error("Error:", error);
     } 
     
+    // Enable form again
     finally {
         form.disabled = false;
         submitButton.disabled = false;
