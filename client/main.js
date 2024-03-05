@@ -19,14 +19,12 @@ form.addEventListener("submit", async function (event) {
     instructionField.disabled = true;
     submitButton.disabled = true;
     loader.classList.remove("dn")
-    
+
     const engineeredPrompt = `
-You are a language critic. Someone has written the following text:
-${inputText}
+You are a language critic. Someone has written the following text: ${inputText}
 ${instruction ? `They have also provided the following instructions: ${instruction}` : ''}
-Please make sure it is grammatically correct. Respond with only the improved text with the following changes:
- - Write the text in HTML format, start with the p tag.
- - anything you changed from the origional text needs to have a span tag around it with the class "changes". This will show the user that has changed about their origional text.`;
+Please ensure it is grammatically correct. Respond with the improved text in HTML format, start with the p tag.
+Any changes made from the original text should be wrapped in a span tag with the class "changes". This will indicate to the user what has been modified from their original text.`;
 
     try {
         // Send POST request to the server with the input
@@ -43,7 +41,9 @@ Please make sure it is grammatically correct. Respond with only the improved tex
         }
 
         // Wait for response and show
-        document.getElementById("response").innerHTML = await response.json();
+        const responseJSON = await response.json();
+        console.log(responseJSON)
+        document.getElementById("response").innerHTML = responseJSON
     } catch (error) {
         console.error("Error:", error);
     }
