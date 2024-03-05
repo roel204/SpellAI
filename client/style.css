@@ -41,6 +41,12 @@ form {
     cursor: pointer;
 }
 
+#clearButton {
+    position: absolute;
+    right: 2vw;
+    bottom: 2vw;
+}
+
 .changes {
     color: red;
 }
