@@ -21,6 +21,8 @@ form {
     border: 1px solid #ccc;
     border-radius: 5px;
     resize: none;
+    overflow: scroll;
+    overflow-x: hidden;
 }
 
 #instruction {
