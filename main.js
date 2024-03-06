@@ -3,10 +3,13 @@ const inputField = document.getElementById("input");
 const instructionField = document.getElementById("instruction");
 const instructionHistoryElement = document.getElementById("instructionHistoryElement");
 const submitButton = document.getElementById("submitButton");
+const controller = new AbortController();
+const { signal } = controller;
 const loader = document.getElementById("loader");
 loader.classList.add("dn");
 const responseField = document.getElementById("response");
 const clearButton = document.getElementById("clearButton");
+const cancelButton = document.getElementById("cancelButton");
 let instructionHistory = [];
 let history = [];
 
@@ -87,7 +90,7 @@ form.addEventListener("submit", async function (event) {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({query: history})
+            body: JSON.stringify({query: history}), signal
         });
 
         if (!response.ok) {
@@ -108,7 +111,11 @@ form.addEventListener("submit", async function (event) {
         localStorage.setItem("spellAIInstructions", JSON.stringify(instructionHistory));
 
     } catch (error) {
-        console.error("Error:", error);
+        if (error.name === "AbortError") {
+            console.log("Request cancelled by user.");
+        } else {
+            console.error("Error:", error);
+        }
     }
 
         // Enable form again
@@ -124,4 +131,8 @@ form.addEventListener("submit", async function (event) {
 clearButton.addEventListener("click", function() {
     localStorage.clear();
     window.location.reload();
+});
+
+cancelButton.addEventListener("click", () => {
+    controller.abort();
 });
