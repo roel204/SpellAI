@@ -4,7 +4,7 @@ const instructionField = document.getElementById("instruction");
 const instructionHistoryElement = document.getElementById("instructionHistoryElement");
 const submitButton = document.getElementById("submitButton");
 const controller = new AbortController();
-const { signal } = controller;
+const {signal} = controller;
 const loader = document.getElementById("loader");
 loader.classList.add("dn");
 const responseField = document.getElementById("response");
@@ -15,7 +15,7 @@ let history = [];
 
 function loadHistory() {
     let storedHistory = localStorage.getItem("spellAIHistory");
-    
+
     // If there is any stored history, fill the array and show the latest text and response. Else, add the system message to the start.
     if (storedHistory) {
         history = JSON.parse(storedHistory);
@@ -32,7 +32,7 @@ An example, you can change the text: "helo there, im Susan." to the text with ht
         ]);
         history = JSON.parse(storedHistory);
     }
-    
+
     // Load the instructions and show them on the page
     const storedInstructions = localStorage.getItem("spellAIInstructions");
     if (storedInstructions) {
@@ -45,6 +45,7 @@ An example, you can change the text: "helo there, im Susan." to the text with ht
         });
     }
 }
+
 loadHistory()
 
 form.addEventListener("submit", async function (event) {
@@ -128,7 +129,7 @@ form.addEventListener("submit", async function (event) {
     }
 });
 
-clearButton.addEventListener("click", function() {
+clearButton.addEventListener("click", function () {
     localStorage.clear();
     window.location.reload();
 });
@@ -136,3 +137,44 @@ clearButton.addEventListener("click", function() {
 cancelButton.addEventListener("click", () => {
     controller.abort();
 });
+
+// const SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+// const SpeechRecognitionEvent = SpeechRecognitionEvent || webkitSpeechRecognitionEvent;
+//
+// const talkButton = document.getElementById("talkButton")
+// talkButton.addEventListener('click', () => startListening())
+//
+// async function startListening() {
+//     talkButton.disabled = true
+//
+//     try {
+//         const stream = await navigator.mediaDevices.getUserMedia({audio: true});
+//         let recognition = new SpeechRecognition()
+//         recognition.lang = 'en-US'
+//         //recognition.lang = 'nl-NL'
+//         recognition.interimResults = false
+//         recognition.maxAlternatives = 1
+//         recognition.start(stream)
+//
+//         recognition.addEventListener("result", (event) => checkResult(event))
+//
+//         recognition.onspeechend = function () {
+//             recognition.stop()
+//             talkButton.disabled = false
+//         }
+//
+//         recognition.onerror = function (event) {
+//             talkButton.disabled = false
+//             console.log(event.error)
+//         }
+//     } catch (error) {
+//         console.error("Error accessing microphone:", error);
+//         talkButton.disabled = false;
+//     }
+// }
+//
+// function checkResult(event) {
+//     let speechResult = event.results[0][0].transcript.toLowerCase()
+//     console.log('🚨' + speechResult)
+//     console.log('Confidence: ' + event.results[0][0].confidence)
+// }
