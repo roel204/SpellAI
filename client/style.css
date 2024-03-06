@@ -47,6 +47,12 @@ form {
     bottom: 2vw;
 }
 
+#talkButton {
+    position: absolute;
+    right: 8vw;
+    bottom: 2vw;
+}
+
 .changes {
     color: red;
 }
