@@ -61,6 +61,15 @@ form {
     animation: spin 2s linear infinite;
 }
 
+#cancelButton {
+    position: absolute;
+    display: block;
+    background-color: black;
+    height: 40px;
+    width: 40px;
+    color: white;
+}
+
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
