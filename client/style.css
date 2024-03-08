@@ -49,8 +49,14 @@ form {
 
 #talkButton {
     position: absolute;
-    right: 8vw;
-    bottom: 2vw;
+    left: 2vw;
+    top: 2vw;
+    width: 30px;
+    cursor: pointer;
+}
+
+.redMic {
+    fill: darkred;
 }
 
 .changes {
