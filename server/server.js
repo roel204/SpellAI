@@ -1,11 +1,9 @@
 import express from 'express';
-import jokeRouter from './joke.js'
 import chatRouter from './chat.js'
 
 const app = express();
 
 app.use(express.json());
-app.use("/joke", jokeRouter);
 app.use("/chat", chatRouter);
 
 // Catch-all route for undefined routes
