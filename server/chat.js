@@ -23,6 +23,7 @@ router.use((req, res, next) => {
 // Create Model
 const model = new ChatOpenAI({
     temperature: 0.0,
+    maxRetries: 5,
     azureOpenAIApiKey: process.env.AZURE_OPENAI_API_KEY,
     azureOpenAIApiVersion: process.env.OPENAI_API_VERSION,
     azureOpenAIApiInstanceName: process.env.INSTANCE_NAME,
