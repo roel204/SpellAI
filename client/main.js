@@ -45,7 +45,7 @@ function loadHistory() {
             ["system", `You are a language critic. A human has written a text. There are also instructions from the human.
 Please ensure the text is grammatically correct. Respond with the improved text in HTML format, start with the p tag.
 Any changes made from the original text should be wrapped in your response text with a span tag with the class "changes". Don't place a list at the end, respond only with the changed text, wrap any changes you made with a span tag with the class "changes". This will indicate to the user what has been modified from their original text.
-An example, you can change the text: "helo there, im Susan." to the text with html tags: "<p><span class="changes">Hello</span> there, <span class="changes">I'm</span> Susan.</p>"
+An example, you can change the text: "helo there, im Susan" to the text with html tags: "<p><span class="changes">Hello</span> there, <span class="changes">I'm</span> Susan<span class="changes">.</span></p>"
 Also add a datestamp at the end in the format "Day - Month - Year" of the date:${dateTime}`],
         ]);
         history = JSON.parse(storedHistory);
