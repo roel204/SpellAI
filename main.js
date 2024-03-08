@@ -95,7 +95,8 @@ form.addEventListener("submit", async function (event) {
         });
 
         if (!response.ok) {
-            new Error("Failed to submit question");
+            new Error("Failed to submit");
+            alert("Failed to submit")
         }
 
         // Wait for response and show
@@ -116,6 +117,7 @@ form.addEventListener("submit", async function (event) {
             console.log("Request cancelled by user.");
         } else {
             console.error("Error:", error);
+            alert("An error has occurred, make sure you have the server side running locally. Read: https://github.com/roel204/SpellAI/blob/master/README.md")
         }
     }
 
