@@ -3,13 +3,10 @@ const inputField = document.getElementById("input");
 const instructionField = document.getElementById("instruction");
 const instructionHistoryElement = document.getElementById("instructionHistoryElement");
 const submitButton = document.getElementById("submitButton");
-const controller = new AbortController();
-const {signal} = controller;
 const loader = document.getElementById("loader");
 loader.classList.add("dn");
 const responseField = document.getElementById("response");
 const clearButton = document.getElementById("clearButton");
-const cancelButton = document.getElementById("cancelButton");
 let instructionHistory = [];
 let history = [];
 
@@ -91,7 +88,7 @@ form.addEventListener("submit", async function (event) {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({query: history}), signal
+            body: JSON.stringify({query: history})
         });
 
         if (!response.ok) {
@@ -113,15 +110,11 @@ form.addEventListener("submit", async function (event) {
         localStorage.setItem("spellAIInstructions", JSON.stringify(instructionHistory));
 
     } catch (error) {
-        if (error.name === "AbortError") {
-            console.log("Request cancelled by user.");
-        } else {
-            console.error("Error:", error);
-            alert("An error has occurred, make sure you have the server side running locally. Read: https://github.com/roel204/SpellAI/blob/master/README.md")
-        }
+        console.error("Error:", error);
+        alert("An error has occurred, make sure you have the server side running locally. Read: https://github.com/roel204/SpellAI/blob/master/README.md")
     }
 
-        // Enable form again
+    // Enable form again
     finally {
         form.disabled = false;
         inputField.disabled = false;
@@ -136,16 +129,13 @@ clearButton.addEventListener("click", function () {
     window.location.reload();
 });
 
-cancelButton.addEventListener("click", () => {
-    controller.abort();
-});
-
+// SpeechRecognition code.
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
 const talkButton = document.getElementById("talkButton")
 talkButton.addEventListener('click', () => startListening())
 
 async function startListening() {
+    // Make .disabled work without a button
     if (!talkButton.disabled) {
         talkButton.classList.add("redMic")
         talkButton.disabled = true

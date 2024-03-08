@@ -29,14 +29,12 @@ const model = new ChatOpenAI({
     azureOpenAIApiDeploymentName: process.env.ENGINE_NAME,
 })
 
-const controller = new AbortController();
-
 // Catch POST request and answer with a response
 router.post("/", async (req, res) => {
     const {query} = req.body;
 
     try {
-        const chat = await model.call(query, {signal: controller.signal});
+        const chat = await model.invoke(query);
         res.json(chat.content);
 
     } catch (error) {
