@@ -20,7 +20,7 @@ router.use((req, res, next) => {
     next();
 });
 
-// Create Model
+// Create openAI Model
 const model = new ChatOpenAI({
     temperature: 0.0,
     maxRetries: 5,

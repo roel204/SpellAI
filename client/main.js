@@ -9,6 +9,12 @@ const responseField = document.getElementById("response");
 const clearButton = document.getElementById("clearButton");
 let instructionHistory = [];
 let history = [];
+const modelSelect = document.getElementById("modelSelect");
+let model = "openAI"
+
+modelSelect.addEventListener("change", function() {
+    model = modelSelect.value
+});
 
 async function getDateTime() {
     try {
@@ -27,7 +33,7 @@ async function getDateTime() {
         console.log(error)
     }
 }
-
+// Get the date from the function above and start the loadHistory function
 getDateTime().then(r => loadHistory(r))
 
 function loadHistory(date) {
@@ -94,8 +100,8 @@ form.addEventListener("submit", async function (event) {
     instructionHistoryElement.appendChild(listItem);
 
     try {
-        // Send POST request to the server with the input
-        const response = await fetch("http://localhost:8000/anthropic", {
+        // Send POST request to the server with the input. Able to change between "anthropic" and "openAI"
+        const response = await fetch(`http://localhost:8000/${model}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
