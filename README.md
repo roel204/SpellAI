@@ -24,4 +24,4 @@ Once the server is running, you can access the SpellAI application by visiting: 
 ## Known Issues:
 
 - Sometimes the local server will crash when launching, simply run the command again.
-- The ChatLLM can give different answers with the same input, even with temperature on 0. This makes it hard to create a working prompt. 
+- OpenAI may give wrong answers, use Anthropic for the best results.
