@@ -7,7 +7,6 @@ const loader = document.getElementById("loader");
 loader.classList.add("dn");
 const responseField = document.getElementById("response");
 const clearButton = document.getElementById("clearButton");
-let dateTime = ""
 let instructionHistory = [];
 let history = [];
 
@@ -21,22 +20,23 @@ async function getDateTime() {
             new Error("Failed to get time");
         } else {
             const data = await response.json();
-            dateTime = data.datetime
+            return (data.datetime)
         }
 
     } catch (error) {
         console.log(error)
     }
 }
-getDateTime().then(r => loadHistory())
 
-function loadHistory() {
+getDateTime().then(r => loadHistory(r))
+
+function loadHistory(date) {
     let storedHistory = localStorage.getItem("spellAIHistory");
 
     // If there is any stored history, fill the array and show the latest text and response. Else, add the system message to the start.
     if (storedHistory) {
         history = JSON.parse(storedHistory);
-        const latestText = history[history.length - 3][1].slice(9);
+        const latestText = history[history.length - 2][1].slice(9).split(/My instructions:.*/)[0].trim();
         const latestResponse = history[history.length - 1][1];
         inputField.value = latestText
         responseField.innerHTML = latestResponse
@@ -45,11 +45,10 @@ function loadHistory() {
             ["system", `You are a language critic. A human has written a text. There are also instructions from the human.
 Please ensure the text is grammatically correct. Respond with the improved text in HTML format, start with the p tag.
 Any changes made from the original text should be wrapped in your response text with a span tag with the class "changes". Don't place a list at the end, respond only with the changed text, wrap any changes you made with a span tag with the class "changes". This will indicate to the user what has been modified from their original text.
-An example, you can change the text: "helo there, im Susan" to the text with html tags: "<p><span class="changes">Hello</span> there, <span class="changes">I'm</span> Susan<span class="changes">.</span></p>"
-Also add the date "${dateTime}" at the end in the format "Date: Day - Month - Year"`],
+An example, you can change the text: "helo there im Susan" to the text with html tags: "<p><span class="changes">Hello</span> there<span class="changes">,</span> <span class="changes">I'm</span> Susan<span class="changes">.</span></p>"
+Also add the date "${date}" at the end in the format "Date: Day - Month - Year"`],
         ]);
         history = JSON.parse(storedHistory);
-        console.log(dateTime)
     }
 
     // Load the instructions and show them on the page
@@ -83,8 +82,8 @@ form.addEventListener("submit", async function (event) {
 
     // Add the human text & instruction to the history array
     history.push(
-        ["human", `My text: ${inputText}`],
-        ["human", `My instructions: ${instruction}`]
+        ["human", `My text: ${inputText}
+        My instructions: ${instruction}`],
     )
     console.log(history)
 
@@ -94,16 +93,9 @@ form.addEventListener("submit", async function (event) {
     listItem.textContent = `${instruction}`;
     instructionHistoryElement.appendChild(listItem);
 
-
-//     const engineeredPrompt = `
-// You are a language critic. Someone has written the following text: ${inputText}
-// ${instruction ? `They have also provided the following instructions: ${instruction}` : ''}
-// Please ensure it is grammatically correct. Respond with the improved text in HTML format, start with the p tag.
-// Any changes made from the original text should be wrapped in a span tag with the class "changes". This will indicate to the user what has been modified from their original text.`;
-
     try {
         // Send POST request to the server with the input
-        const response = await fetch("http://localhost:8000/chat", {
+        const response = await fetch("http://localhost:8000/anthropic", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -112,7 +104,7 @@ form.addEventListener("submit", async function (event) {
         });
 
         if (!response.ok) {
-            new Error("Failed to submit");
+            console.error(response)
             alert("Failed to submit")
         }
 

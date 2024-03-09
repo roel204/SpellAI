@@ -1,10 +1,12 @@
 import express from 'express';
-import chatRouter from './chat.js'
+import openAI from './openAI.js'
+import anthropic from "./anthropic.js";
 
 const app = express();
 
 app.use(express.json());
-app.use("/chat", chatRouter);
+app.use("/anthropic", anthropic);
+app.use("/openAI", openAI)
 
 // Catch-all route for undefined routes
 app.use((req, res) => {
