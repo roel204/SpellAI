@@ -3,19 +3,23 @@ const inputField = document.getElementById("input");
 const instructionField = document.getElementById("instruction");
 const instructionHistoryElement = document.getElementById("instructionHistoryElement");
 const submitButton = document.getElementById("submitButton");
-const loader = document.getElementById("loader");
-loader.classList.add("dn");
 const responseField = document.getElementById("response");
 const clearButton = document.getElementById("clearButton");
+const loader = document.getElementById("loader");
+loader.classList.add("dn");
+
 let instructionHistory = [];
 let history = [];
+
 const modelSelect = document.getElementById("modelSelect");
 let model = "openAI"
 
+// Code to switch between different models
 modelSelect.addEventListener("change", function () {
     model = modelSelect.value
 });
 
+// Get the date from API
 async function getDateTime() {
     try {
         const response = await fetch("https://worldtimeapi.org/api/ip", {
@@ -40,7 +44,7 @@ getDateTime().then(r => loadHistory(r))
 function loadHistory(date) {
     let storedHistory = localStorage.getItem("spellAIHistory");
 
-    // If there is any stored history, fill the array and show the latest text and response. Else, add the system message to the start.
+    // If there is any stored history, fill the array and show the latest text and response
     if (storedHistory) {
         history = JSON.parse(storedHistory);
         const latestText = history[history.length - 2][1].slice(9).split(/My instructions:.*/)[0].trim();
@@ -48,17 +52,17 @@ function loadHistory(date) {
         inputField.value = latestText
         responseField.innerHTML = latestResponse
     } else {
-        storedHistory = JSON.stringify([
+        // If there is no stored history, add the system message to the start of the array
+        history = [
             ["system", `You are a language critic. A human has written a text. There are also instructions from the human.
 Please ensure the text is grammatically correct. Respond with the improved text in HTML format, start with the p tag.
 Any changes made from the original text should be wrapped in your response text with a span tag with the class "changes". Don't place a list at the end, respond only with the changed text, wrap any changes you made with a span tag with the class "changes". This will indicate to the user what has been modified from their original text.
 An example, you can change the text: "helo there im Susan" to the text with html tags: "<p><span class="changes">Hello</span> there<span class="changes">,</span> <span class="changes">I'm</span> Susan<span class="changes">.</span></p>"
 Also add the date "${date}" at the end in the format "Date: Day - Month - Year"`],
-        ]);
-        history = JSON.parse(storedHistory);
+        ];
     }
 
-    // Load the instructions and show them on the page
+    // If there are any stored instructions, show them on the page
     const storedInstructions = localStorage.getItem("spellAIInstructions");
     if (storedInstructions) {
         instructionHistory = JSON.parse(storedInstructions);
@@ -80,7 +84,7 @@ form.addEventListener("submit", async function (event) {
     let instruction = formData.get("instruction");
     instruction = instruction ? `${instruction}` : `Focus on my grammar and sentence structure.`
 
-    // Disable the form when text has been submitted
+    // Disable the form
     form.disabled = true;
     inputField.disabled = true;
     instructionField.disabled = true;
@@ -133,7 +137,7 @@ form.addEventListener("submit", async function (event) {
         alert("An error has occurred, make sure you have the server side running locally. Read: https://github.com/roel204/SpellAI/blob/master/README.md")
     }
 
-    // Enable form again
+    // Enable the form again
     finally {
         form.disabled = false;
         inputField.disabled = false;
@@ -143,6 +147,7 @@ form.addEventListener("submit", async function (event) {
     }
 });
 
+// Button to clear history and reload the page
 clearButton.addEventListener("click", function () {
     localStorage.clear();
     window.location.reload();
@@ -190,6 +195,7 @@ async function startListening() {
     }
 }
 
+// Show the speech result
 function checkResult(event) {
     let speechResult = event.results[0][0].transcript
     console.log(speechResult)
