@@ -202,20 +202,3 @@ function checkResult(event) {
     console.log('Confidence: ' + event.results[0][0].confidence)
     inputField.value = inputField.value + speechResult
 }
-
-// function synth(text) {
-//     const synth = window.speechSynthesis;
-//     let voices = synth.getVoices();
-//     console.log(voices[0]);
-//
-//     const utterThis = new SpeechSynthesisUtterance(text);
-//     utterThis.voice = voices[0];
-//     utterThis.pitch = 1;
-//     utterThis.rate = 1;
-//     synth.speak(utterThis);
-// }
-//
-// synth("Hello")
-//
-// let utterance = new SpeechSynthesisUtterance("Hello world!");
-// speechSynthesis.speak(utterance);
